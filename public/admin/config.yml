@@ -1,0 +1,66 @@
+backend:
+  name: github
+  repo: patchbay-grenoble/website
+  branch: main
+
+locale: fr
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: projets
+    label: Projets
+    folder: src/content/projets
+    create: true
+    fields:
+      - { label: Nom, name: title, widget: string }
+      - { label: Phrase de présentation, name: tagline, widget: string, required: false }
+      - { label: Image, name: image, widget: image, required: false }
+      - { label: "Expérimental → dansant (0-100)", name: x, widget: number, value_type: int, min: 0, max: 100, default: 50 }
+      - { label: "Sombre → chill (0-100)", name: y, widget: number, value_type: int, min: 0, max: 100, default: 50 }
+      - label: Liens
+        name: links
+        widget: list
+        required: false
+        fields:
+          - { label: Nom, name: label, widget: string }
+          - { label: URL, name: url, widget: string }
+      - { label: Collaborations, name: connexions, widget: relation, collection: projets, search_fields: [title], value_field: "{{slug}}", display_fields: [title], multiple: true, required: false }
+      - label: Flux
+        name: flux
+        widget: list
+        required: false
+        fields:
+          - { label: URL, name: url, widget: string }
+      - { label: Présentation, name: body, widget: markdown }
+
+  - name: evenements
+    label: Agenda
+    folder: src/content/evenements
+    create: true
+    fields:
+      - { label: Titre, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { label: Date en toutes lettres, name: dateText, widget: string, required: false }
+      - { label: Type, name: type, widget: select, options: [Concert, Happening, Atelier, Session vidéo, Radio, Autre], default: Concert }
+      - { label: Lieu, name: lieu, widget: string, required: false }
+      - { label: Statut, name: statut, widget: select, options: [Confirmé, À confirmer], default: À confirmer }
+      - { label: Lien, name: link, widget: string, required: false }
+      - { label: Description, name: body, widget: markdown, required: false }
+
+  - name: reglages
+    label: Réglages
+    files:
+      - name: site
+        label: Coordonnées
+        file: src/data/site.json
+        fields:
+          - { label: E-mail, name: email, widget: string, required: false }
+          - { label: Instagram, name: instagram, widget: string, required: false }
+          - { label: Bandcamp, name: bandcamp, widget: string, required: false }
+          - { label: Hashtag (sans #), name: hashtag, widget: string, required: false }
+          - label: Instances Mastodon
+            name: instances
+            widget: list
+            required: false
+            field: { label: Instance, name: instance, widget: string }
