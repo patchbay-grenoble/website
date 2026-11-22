@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+---
+<Base title="À propos" description="Qui est Patchbay, ce que fait le collectif et comment le contacter.">
+  <h1>Le collectif</h1>
+  <div class="texte">
+    <p>Patchbay réunit des artistes et des projets de musiques électroniques live à Grenoble, des esthétiques expérimentales et du sound-art jusqu’aux formats très dansants. Le nom vient du studio : c’est l’endroit où l’on branche les choses les unes aux autres.</p>
+    <p>Le collectif est une étiquette et une vitrine. Il s’appuie sur l’existant sans le remplacer, et se définira peu à peu par les actions qu’il mène.</p>
+
+    <h2>Qui peut en faire partie ?</h2>
+    <p>Il n’y a pas de sélection artistique. Le critère est le live : machines ou ordinateur, PureData, SuperCollider, Faust et autres, tant que la musique se joue sur le moment plutôt que d’être entièrement produite en amont. Des DJ sets peuvent aussi trouver leur place dans les soirées que nous programmons.</p>
+
+    <h2>Ce que nous faisons</h2>
+    <ul>
+      <li>Des dates et des sessions live : plateaux à plusieurs projets, formats longs, petits happenings dans des lieux inattendus.</li>
+      <li>Une compilation de morceaux exclusifs, écrits pour l’occasion par les projets du collectif, ou à plusieurs.</li>
+      <li>Des sessions vidéo, en studio ou sur place, centrées sur le geste et le son.</li>
+      <li>Des ateliers DIY : soudure en commun, hacking, prototypage de modules et d’instruments.</li>
+    </ul>
+
+    <h2>Nous contacter</h2>
+    <p>Vous faites de la musique électronique live à Grenoble, ou vous programmez un lieu ? Écrivez-nous.</p>
+    <p>
+      {site.email ? <a href={`mailto:${site.email}`}>{site.email}</a> : <span>Les coordonnées arrivent bientôt.</span>}
+      {site.instagram && <> Retrouvez-nous aussi sur <a href={site.instagram}>Instagram</a>.</>}
+    </p>
+  </div>
+</Base>

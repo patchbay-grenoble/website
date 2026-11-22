@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import Pub from '../components/Pub.astro';
+import { fil } from '../lib/flux';
+const items = await fil();
+---
+<Base title="Flux" description="Les dernières sorties et publications des projets du collectif Patchbay.">
+  <h1>Flux</h1>
+  <p class="chapo">Les dernières sorties et publications des projets, rassemblées automatiquement.</p>
+  {items.length > 0
+    ? <ul class="evts">{items.map((p) => <Pub p={p} />)}</ul>
+    : <p>Rien pour l’instant. Ajoutez l’adresse d’un profil (YouTube, SoundCloud, Mixcloud, Mastodon…) dans la fiche d’un projet pour que ses publications apparaissent ici.</p>}
+</Base>

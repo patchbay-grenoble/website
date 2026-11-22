@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { projets: CollectionEntry<'projets'>[] }
+const { projets } = Astro.props;
+
+const parId = new Map(projets.map((p) => [p.id, p]));
+const vus = new Set<string>();
+const cables: { d: string }[] = [];
+for (const p of projets) {
+  for (const autre of p.data.connexions) {
+    const q = parId.get(autre);
+    const k = [p.id, autre].sort().join('|');
+    if (!q || vus.has(k)) continue;
+    vus.add(k);
+    const [x1, y1, x2, y2] = [p.data.x, 100 - p.data.y, q.data.x, 100 - q.data.y];
+    const milieu = (y1 + y2) / 2;
+    const cy = Math.min(milieu + 10 + Math.hypot(x2 - x1, y2 - y1) * 0.25, 196 - milieu);
+    cables.push({ d: `M${x1} ${y1} Q${(x1 + x2) / 2} ${cy} ${x2} ${y2}` });
+  }
+}
+---
+<figure class="carte">
+  <p class="ay"><span>dark</span><span>chill</span></p>
+  <div class="plan">
+    <svg class="cables" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      {cables.map((c, i) => <path class="cable" d={c.d} pathLength="1" style={`--i:${i}`} />)}
+    </svg>
+    {projets.map((p) => (
+      <a class:list={['jack', { gauche: p.data.x >= 50 }]} href={`/projets/${p.id}/`} style={`--x:${p.data.x}%;--y:${p.data.y}%`}>
+        <span class="nom">{p.data.title}</span>
+      </a>
+    ))}
+  </div>
+  <p class="ax"><span>expérimental</span><span>dansant</span></p>
+  <figcaption>Chaque prise est un projet. Un câble relie les projets qui collaborent. Cliquez sur une prise pour la découvrir.</figcaption>
+</figure>

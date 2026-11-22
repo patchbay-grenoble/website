@@ -1,0 +1,53 @@
+---
+import '@fontsource/permanent-marker';
+import '@fontsource/space-mono/400.css';
+import '@fontsource/space-mono/400-italic.css';
+import '@fontsource/space-mono/700.css';
+import '../styles/global.css';
+import site from '../data/site.json';
+
+const { title, description = 'Collectif grenoblois de musiques électroniques live, de l’expérimental au dansant.' } = Astro.props;
+const fullTitle = title ? `${title} | Patchbay` : 'Patchbay, musiques électroniques live à Grenoble';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/projets/', label: 'projets' },
+  { href: '/agenda/', label: 'agenda' },
+  { href: '/flux/', label: 'flux' },
+  { href: '/a-propos/', label: 'à propos' },
+];
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ece9e0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#151515" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip" href="#contenu">Aller au contenu</a>
+    <header class="haut">
+      <a class="marque" href="/" aria-label="Patchbay, accueil">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="/logo/avatar-small-dark-transparent.svg" />
+          <img src="/logo/avatar-small-light-transparent.svg" alt="" width="64" height="64" />
+        </picture>
+      </a>
+      <nav aria-label="Navigation principale">
+        {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      </nav>
+    </header>
+    <main id="contenu"><slot /></main>
+    <footer class="bas">
+      <p>Patchbay, collectif de musiques électroniques live à Grenoble.</p>
+      <p class="reseaux">
+        {site.instagram && <a href={site.instagram}>Instagram</a>}
+        {site.bandcamp && <a href={site.bandcamp}>Bandcamp</a>}
+        {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+      </p>
+    </footer>
+  </body>
+</html>

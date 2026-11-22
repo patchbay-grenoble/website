@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { quand } from '../lib/events';
+interface Props { e: CollectionEntry<'evenements'> }
+const { e } = Astro.props;
+const { title, type, lieu, statut, link } = e.data;
+---
+<li class="evt">
+  <p class="quand">{quand(e)}</p>
+  <div>
+    <h3>{link ? <a href={link}>{title}</a> : title}</h3>
+    <p class="meta">[{type}]{lieu ? ` ${lieu}` : ''}{statut === 'À confirmer' && <span class="statut"> [à confirmer]</span>}</p>
+    <div class="corps" set:html={e.rendered?.html ?? ''} />
+  </div>
+</li>

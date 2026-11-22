@@ -1,0 +1,14 @@
+---
+import type { Publication } from '../lib/flux';
+interface Props { p: Publication; avecProjet?: boolean }
+const { p, avecProjet = true } = Astro.props;
+---
+<li class="evt">
+  <p class="quand">{p.date.toISOString().slice(0, 10)}</p>
+  <div>
+    <h3><a href={p.url} rel="nofollow noopener">{p.titre}</a></h3>
+    <p class="meta">
+      {avecProjet && p.projet && <><a href={`/projets/${p.projet.id}/`}>{p.projet.nom}</a>{' '}</>}[{p.source}]
+    </p>
+  </div>
+</li>
