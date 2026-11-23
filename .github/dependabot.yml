@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    ignore:
+      # astro check refuses TypeScript 7; drop once Astro type-checking supports it (@astrojs/ts-content-mapper, TS 7.1+)
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']

@@ -6,11 +6,19 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "bun test",
+    "validate": "html-validate dist"
   },
   "dependencies": {
     "@fontsource/permanent-marker": "^5.0.0",
     "@fontsource/space-mono": "^5.0.0",
     "astro": "7.4.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "html-validate": "^11.21.1",
+    "typescript": "^6.0.3"
   }
 }
