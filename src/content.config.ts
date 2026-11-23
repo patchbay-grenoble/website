@@ -11,8 +11,6 @@ const projets = defineCollection({
     x: z.number().min(0).max(100).default(50),
     y: z.number().min(0).max(100).default(50),
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
-    // Identifiants (noms de fichier) des projets avec lesquels celui-ci est relié par un câble sur la carte
-    connexions: z.array(z.string()).default([]),
     // Profils ou flux à suivre automatiquement (YouTube, SoundCloud, Mixcloud, Mastodon, blog…)
     flux: z.array(z.object({ url: z.string() })).default([]),
   }),

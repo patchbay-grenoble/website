@@ -10,23 +10,24 @@ const { avenir } = await evenements();
 ---
 <Base>
   <div class="hero">
-    <div>
-      <h1 class="logo">
-        <span class="visually-hidden">Patchbay</span>
-        <span class="wordmark" aria-hidden="true">
-          <span class="mot">Patch</span>
-          <span class="mot">Bay</span>
-          <span class="cable-logo"></span>
-        </span>
-      </h1>
-      <p class="chapo">Un collectif pour les musiques électroniques live à Grenoble, des recherches sonores aux plateaux les plus dansants.</p>
-      <p class="liens">
-        <a class="bouton" href="/agenda/">Voir l’agenda</a>
-        <a class="bouton" href="/a-propos/">Découvrir le collectif</a>
-      </p>
-    </div>
-    <Carte projets={projets} />
+    <h1 class="logo">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="/logo/square-dark-transparent.svg" />
+        <img src="/logo/square-light-transparent.svg" alt="Patchbay" width="320" height="320" />
+      </picture>
+    </h1>
+    <p class="chapo">Un collectif pour les musiques électroniques live à Grenoble, des recherches sonores aux sets les plus dansants.</p>
+    <p class="liens">
+      <a class="bouton" href="/agenda/">Voir l’agenda</a>
+      <a class="bouton" href="/a-propos/">Découvrir le collectif</a>
+    </p>
   </div>
+
+  <section>
+    <h2>Cartographie du live</h2>
+    <p class="chapo">De l’expérimental au dansant, du dark au chill : où se situent les projets du collectif.</p>
+    <Carte projets={projets} />
+  </section>
 
   <section>
     <h2>Prochaines dates</h2>
@@ -38,6 +39,6 @@ const { avenir } = await evenements();
 
   <section class="texte">
     <h2>Un collectif, pas un label</h2>
-    <p>Patchbay est une vitrine commune. Elle s’appuie sur ce que chacun·e porte déjà (micro-labels, collectifs, associations) pour monter des plateaux à plusieurs projets, des sessions, des ateliers et une compilation.</p>
+    <p>Patchbay est une vitrine commune. Elle s’appuie sur ce que chacun·e porte déjà (micro-labels, collectifs, associations) pour monter des soirées à plusieurs projets, des sessions, des ateliers et une compilation.</p>
   </section>
 </Base>

@@ -175,84 +175,29 @@ img {
 }
 
 .hero {
-  display: grid;
-  gap: 2.5rem;
-  align-items: center;
-}
-
-@media (min-width: 56rem) {
-  .hero {
-    grid-template-columns: 1fr 1fr;
-  }
+  text-align: center;
 }
 
 .logo {
-  margin: 0 0 1.5rem;
-  font-size: clamp(4rem, 13vw, 7.5rem);
-  line-height: 0.85;
+  margin: 0 0 1rem;
+  line-height: 0;
   transform: none;
 }
 
-.wordmark {
-  display: inline-block;
-  transform: rotate(-2deg);
-  transform-origin: left bottom;
+/* Le dessin occupe y 83-251 du carré 320 : on recadre le vide au-dessus et en dessous */
+.logo img {
+  width: min(26rem, 100%);
+  aspect-ratio: 320 / 190;
+  object-fit: cover;
+  object-position: 50% 55%;
 }
 
-.mot {
-  display: block;
-  text-align: center;
-  text-transform: uppercase;
+.hero .chapo {
+  margin-inline: auto;
 }
 
-.cable-logo {
-  position: relative;
-  display: block;
-  height: 0.2em;
-  margin: 0.16em 0.1em 0;
-  transform: rotate(-1.5deg);
-}
-
-.cable-logo::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -0.2em;
-  height: 0.4em;
-  border: 0.08em solid var(--rose);
-  border-radius: 50%;
-  clip-path: inset(50% 0 0 0);
-}
-
-.cable-logo::after {
-  content: "";
-  position: absolute;
-  left: -0.1em;
-  right: -0.1em;
-  top: -0.15em;
-  height: 0.4em;
-  background:
-    radial-gradient(
-      circle at 0.14em 0.15em,
-      var(--texte) 0.095em,
-      transparent calc(0.095em + 1px)
-    ),
-    radial-gradient(
-      circle at calc(100% - 0.14em) 0.15em,
-      var(--texte) 0.095em,
-      transparent calc(0.095em + 1px)
-    );
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
+.hero .liens {
+  justify-content: center;
 }
 
 .chapo {
@@ -279,131 +224,347 @@ img {
   border-color: var(--rose);
 }
 
+/* Cartographie du live : axes croisés (expérimental → dansant, dark → chill), sans dépendance JS */
 .carte {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.6rem;
+  container: carte / inline-size;
   margin: 0;
-}
-
-.ay,
-.ax {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  color: var(--discret);
-  font-size: 0.85rem;
-  font-style: italic;
-}
-
-.ay {
-  grid-area: 1 / 1;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
 }
 
 .plan {
-  grid-area: 1 / 2;
+  container-type: size;
   position: relative;
   aspect-ratio: 1;
   background-color: var(--panneau);
-  border: 2.5px solid var(--texte);
-  border-radius: 2% 1% 2.5% 1.5% / 1.5% 2.5% 1% 2%;
   background-image:
     linear-gradient(var(--trait) 1px, transparent 1px),
     linear-gradient(90deg, var(--trait) 1px, transparent 1px);
-  background-size: 12.5% 12.5%;
+  background-size: 2.5rem 2.5rem;
+  background-position: calc(50% + 1.25rem) calc(50% + 1.25rem);
+  border: 2.5px solid var(--texte);
+  border-radius: 2% 1% 2.5% 1.5% / 1.5% 2.5% 1% 2%;
 }
 
-.ax {
-  grid-area: 2 / 2;
+@container carte (min-width: 40rem) {
+  .plan {
+    aspect-ratio: 16 / 9;
+  }
 }
 
-.carte figcaption {
-  grid-area: 3 / 2;
-  font-size: 0.8rem;
+.axe {
+  position: absolute;
   color: var(--discret);
 }
 
-.cables {
+.axe-x {
+  left: 2.5%;
+  right: 2.5%;
+  top: 50%;
+  border-top: 2px dashed;
+}
+
+.axe-y {
+  top: 2.5%;
+  bottom: 2.5%;
+  left: 50%;
+  border-left: 2px dashed;
+}
+
+.axe::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: currentColor;
+}
+
+.axe-x::after {
+  right: -0.3rem;
+  top: calc(-0.45rem - 1px);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.axe-y::after {
+  top: -0.3rem;
+  left: calc(-0.45rem - 1px);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.lib {
+  position: absolute;
+  font: italic 400 clamp(0.95rem, 2.4cqw, 1.4rem)/1 var(--titre);
   pointer-events: none;
 }
 
-.cable {
-  fill: none;
-  stroke: var(--rose);
-  stroke-width: 1.1;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
+.lib-g,
+.lib-d {
+  top: calc(50% + 0.7rem);
+}
+
+.lib-g {
+  left: 3%;
+  rotate: -2deg;
+}
+
+.lib-d {
+  right: 3%;
+  rotate: 1.5deg;
+}
+
+.lib-h,
+.lib-b {
+  left: calc(50% + 0.8rem);
+}
+
+.lib-h {
+  top: 3%;
+  rotate: -1.5deg;
+}
+
+.lib-b {
+  bottom: 3%;
+  rotate: 2deg;
+}
+
+/* Point de taille nulle placé sur les coordonnées ; marge de 4 % pour garder les bords cliquables */
+.point {
+  position: absolute;
+  left: calc(var(--px) * 1%);
+  bottom: calc(var(--py) * 1%);
+}
+
+.point:hover,
+.point:focus-within,
+.point:has(:popover-open) {
+  z-index: 2;
+}
+
+.jack {
+  --trou: var(--panneau);
+  anchor-name: var(--ancre);
+  position: absolute;
+  left: -0.75rem;
+  top: -0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--trou) 0 27%, var(--texte) 30%);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+}
+
+.jack:hover,
+.jack:focus-visible,
+.point:has(:popover-open) .jack {
+  --trou: var(--rose);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px var(--rose);
+}
+
+/* Ondes de signal autour de la prise survolée */
+.jack::before,
+.jack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--rose);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nom {
+  position: absolute;
+  left: 1.3rem;
+  top: 0;
+  translate: -0.4rem -50%;
+  width: max-content;
+  max-width: 15rem;
+  padding: 0.05rem 0.5rem;
+  background: var(--rose);
+  border: 2px solid var(--texte);
+  border-radius: 3px 8px 4px 7px;
+  color: var(--encre);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, translate 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.point.gauche .nom {
+  left: auto;
+  right: 1.3rem;
+  translate: 0.4rem -50%;
+}
+
+.jack:hover + .nom,
+.jack:focus-visible + .nom {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+/* La fiche ouverte affiche déjà le nom */
+.point:has(:popover-open) .nom {
+  opacity: 0;
+}
+
+/* Projection pointillée du point survolé sur les deux axes */
+.guide {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.guide-x {
+  top: -1px;
+  left: min(0px, calc((50 - var(--px)) * 1cqw));
+  width: max(calc((50 - var(--px)) * 1cqw), calc((var(--px) - 50) * 1cqw));
+  border-top: 2px dotted var(--rose-texte);
+}
+
+.guide-y {
+  left: -1px;
+  bottom: min(0px, calc((50 - var(--py)) * 1cqh));
+  height: max(calc((50 - var(--py)) * 1cqh), calc((var(--py) - 50) * 1cqh));
+  border-left: 2px dotted var(--rose-texte);
+}
+
+.point:has(.jack:hover) .guide,
+.point:has(.jack:focus-visible) .guide,
+.point:has(:popover-open) .guide {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .cable {
-    animation: brancher 0.9s ease-out backwards;
-    animation-delay: calc(var(--i) * 0.2s + 0.3s);
+  .jack {
+    animation: brancher 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation-delay: calc(var(--i) * 70ms + 150ms);
+  }
+
+  .jack:hover::before,
+  .jack:focus-visible::before,
+  .point:has(:popover-open) .jack::before {
+    animation: onde 1.6s ease-out infinite;
+  }
+
+  .jack:hover::after,
+  .jack:focus-visible::after,
+  .point:has(:popover-open) .jack::after {
+    animation: onde 1.6s ease-out 0.8s infinite;
   }
 }
 
 @keyframes brancher {
   from {
-    stroke-dashoffset: 1;
+    scale: 0;
   }
 }
 
-.jack {
-  position: absolute;
-  left: var(--x);
-  bottom: var(--y);
-  width: 1.15rem;
-  height: 1.15rem;
-  margin: -0.575rem;
-  border-radius: 50%;
-  background: var(--texte);
-  text-decoration: none;
+@keyframes onde {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.8);
+  }
 }
 
-.jack::before {
-  content: "";
-  position: absolute;
-  inset: -0.5rem;
-}
-
-.jack:hover,
-.jack:focus-visible {
-  background: var(--rose);
-  box-shadow: 0 0 0 3px var(--texte);
-}
-
-.nom {
-  position: absolute;
-  left: 1.6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: max-content;
-  max-width: 7rem;
-  padding: 0 0.4rem;
+/* Fiche ouverte au clic (Popover API) ; centrée si le navigateur ne gère pas l'ancrage CSS */
+.pop {
+  width: min(19rem, 100vw - 2rem);
+  padding: 1rem 1.2rem 1.1rem;
   background: var(--fond);
-  border: 1.5px solid var(--texte);
-  border-radius: 3px 8px 4px 7px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  line-height: 1.3;
+  border: 2.5px solid var(--texte);
+  border-radius: 14px 4px 12px 5px / 5px 12px 4px 14px;
+  box-shadow: 0.4rem 0.4rem 0 var(--rose);
   color: var(--texte);
 }
 
-.jack:hover .nom,
-.jack:focus-visible .nom {
-  background: var(--rose);
-  color: var(--encre);
+@supports (position-area: top) {
+  .pop {
+    inset: auto;
+    margin: 0.8rem;
+    position-anchor: var(--ancre);
+    position-area: top;
+    position-try-fallbacks: top span-right, top span-left, bottom, bottom span-right, bottom span-left;
+  }
 }
 
-.jack.gauche .nom {
-  left: auto;
-  right: 1.6rem;
+@media (prefers-reduced-motion: no-preference) {
+  .pop {
+    transition: opacity 0.2s, translate 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @starting-style {
+    .pop:popover-open {
+      opacity: 0;
+      translate: 0 0.6rem;
+    }
+  }
+}
+
+.pop h3 {
+  margin: 0 1.6rem 0.4rem 0;
+  font: italic 400 1.7rem/1.05 var(--titre);
+  rotate: -1deg;
+}
+
+.pop .ligne {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pop-liens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.pop-liens a {
+  display: inline-block;
+  padding: 0.1rem 0.7rem;
+  border: 2px solid var(--texte);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pop-fiche {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.fermer {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.45rem;
+  padding: 0 0.3rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 700 1.5rem/1 var(--corps);
+  cursor: pointer;
+}
+
+.fermer:hover {
+  color: var(--rose-texte);
+}
+
+.carte figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--discret);
 }
 
 .evts,
