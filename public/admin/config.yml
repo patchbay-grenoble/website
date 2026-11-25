@@ -2,6 +2,9 @@ backend:
   name: github
   repo: patchbay-grenoble/website
   branch: main
+  # Connexion par identifiant et mot de passe, sans compte GitHub (Worker Cloudflare, repo patchbay-grenoble/sveltia-cms-additions)
+  auth_type: additions
+  base_url: https://sveltia-cms-additions.collectif-patchbay.workers.dev
   # Enregistrer ne publie rien (commit [skip ci]) : le bouton de publication déclenche le workflow CD (sveltia-cms-publish)
   skip_ci: true
 
