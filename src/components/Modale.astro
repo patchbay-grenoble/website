@@ -1,0 +1,10 @@
+---
+// Fenêtre modale native, ouverte par <button command="show-modal" commandfor={id}>
+interface Props { id: string; titre: string }
+const { id, titre } = Astro.props;
+---
+<dialog class="modale" id={id} aria-labelledby={`${id}-titre`}>
+  <button class="fermer" type="button" command="close" commandfor={id} aria-label="Fermer">×</button>
+  <h2 id={`${id}-titre`}>{titre}</h2>
+  <slot />
+</dialog>

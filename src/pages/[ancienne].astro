@@ -1,0 +1,26 @@
+---
+// Anciennes pages devenues des sections de l'accueil : redirection vers l'ancre correspondante.
+// Pas de `redirects` Astro : sa page générée a un doctype en minuscules, refusé par html-validate
+export function getStaticPaths() {
+  return [
+    { params: { ancienne: 'agenda' }, props: { ancre: 'agenda', titre: 'Agenda' } },
+    { params: { ancienne: 'flux' }, props: { ancre: 'flux', titre: 'Flux' } },
+    { params: { ancienne: 'a-propos' }, props: { ancre: 'collectif', titre: 'Le collectif' } },
+    { params: { ancienne: 'projets' }, props: { ancre: 'carte', titre: 'Projets' } },
+  ];
+}
+const { ancre, titre } = Astro.props;
+const cible = `/#${ancre}`;
+---
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content={`0; url=${cible}`}>
+    <meta name="robots" content="noindex">
+    <title>{titre} | Patchbay</title>
+  </head>
+  <body>
+    <p><a href={cible}>Cette page est maintenant sur l’accueil.</a></p>
+  </body>
+</html>

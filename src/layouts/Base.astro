@@ -8,12 +8,12 @@ import site from '../data/site.json';
 
 const { title, description = 'Collectif grenoblois de musiques électroniques live, de l’expérimental au dansant.' } = Astro.props;
 const fullTitle = title ? `${title} | Patchbay` : 'Patchbay, musiques électroniques live à Grenoble';
-const path = Astro.url.pathname;
+// Ancres de l'accueil, préfixées par / pour fonctionner aussi depuis /projets/<slug>/
 const nav = [
-  { href: '/projets/', label: 'projets' },
-  { href: '/agenda/', label: 'agenda' },
-  { href: '/flux/', label: 'flux' },
-  { href: '/a-propos/', label: 'à propos' },
+  { href: '/#carte', label: 'carte' },
+  { href: '/#agenda', label: 'agenda' },
+  { href: '/#flux', label: 'flux' },
+  { href: '/#collectif', label: 'collectif' },
 ];
 ---
 <!doctype html>
@@ -37,7 +37,7 @@ const nav = [
         </picture>
       </a>
       <nav aria-label="Navigation principale">
-        {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </nav>
     </header>
     <main id="contenu"><slot /></main>

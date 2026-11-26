@@ -2,11 +2,19 @@
 import Base from '../layouts/Base.astro';
 import Carte from '../components/Carte.astro';
 import Evenement from '../components/Evenement.astro';
+import FicheProjet from '../components/FicheProjet.astro';
+import Modale from '../components/Modale.astro';
+import Pub from '../components/Pub.astro';
 import { getCollection } from 'astro:content';
 import { evenements } from '../lib/events';
+import { fil } from '../lib/flux';
+import site from '../data/site.json';
 
 const projets = await getCollection('projets');
-const { avenir } = await evenements();
+const { avenir, passés } = await evenements();
+const items = await fil();
+// Nombre de publications affichées dans la section, le reste est dans la fenêtre "Tout le flux"
+const APERCU = 5;
 ---
 <Base>
   <div class="hero">
@@ -18,27 +26,82 @@ const { avenir } = await evenements();
     </h1>
     <p class="chapo">Un collectif pour les musiques électroniques live à Grenoble, des recherches sonores aux sets les plus dansants.</p>
     <p class="liens">
-      <a class="bouton" href="/agenda/">Voir l’agenda</a>
-      <a class="bouton" href="/a-propos/">Découvrir le collectif</a>
+      <a class="bouton" href="#agenda">Voir l’agenda</a>
+      <a class="bouton" href="#collectif">Découvrir le collectif</a>
     </p>
   </div>
 
-  <section>
+  <section id="carte">
     <h2>Cartographie du live</h2>
     <p class="chapo">De l’expérimental au dansant, du dark au chill : où se situent les projets du collectif.</p>
     <Carte projets={projets} />
+    {projets.map((p) => (
+      <Modale id={`fiche-${p.id}`} titre={p.data.title}>
+        <FicheProjet p={p} niveau={3} />
+      </Modale>
+    ))}
   </section>
 
-  <section>
-    <h2>Prochaines dates</h2>
+  <section id="agenda">
+    <h2>Agenda</h2>
     {avenir.length > 0
-      ? <ul class="evts">{avenir.slice(0, 3).map((e) => <Evenement e={e} />)}</ul>
-      : <p>Les prochaines dates arrivent bientôt.</p>}
-    <p><a href="/agenda/">Tout l’agenda</a></p>
+      ? <ul class="evts">{avenir.map((e) => <Evenement e={e} />)}</ul>
+      : <p>Rien d’annoncé pour l’instant. Les dates seront publiées ici dès qu’elles sont confirmées.</p>}
+    {passés.length > 0 && (
+      <details class="passes">
+        <summary>Dates passées</summary>
+        <ul class="evts">{passés.map((e) => <Evenement e={e} />)}</ul>
+      </details>
+    )}
   </section>
 
-  <section class="texte">
-    <h2>Un collectif, pas un label</h2>
-    <p>Patchbay est une vitrine commune. Elle s’appuie sur ce que chacun·e porte déjà (micro-labels, collectifs, associations) pour monter des soirées à plusieurs projets, des sessions, des ateliers et une compilation.</p>
+  <section id="flux">
+    <h2>Flux</h2>
+    <p class="chapo">Les dernières sorties et publications des projets, rassemblées automatiquement.</p>
+    {items.length > 0
+      ? <ul class="evts">{items.slice(0, APERCU).map((x) => <Pub p={x} />)}</ul>
+      : <p>Rien pour l’instant. Ajoutez l’adresse d’un profil (YouTube, SoundCloud, Mixcloud, Mastodon…) dans la fiche d’un projet pour que ses publications apparaissent ici.</p>}
+    {items.length > APERCU && (
+      <>
+        <button class="bouton" type="button" command="show-modal" commandfor="modale-flux">Voir tout le flux</button>
+        <Modale id="modale-flux" titre="Tout le flux">
+          <ul class="evts">{items.map((x) => <Pub p={x} />)}</ul>
+        </Modale>
+      </>
+    )}
   </section>
+
+  <section id="collectif" class="texte">
+    <h2>Le collectif</h2>
+    <p>Patchbay est une vitrine commune. Elle s’appuie sur ce que chacun·e porte déjà (micro-labels, collectifs, associations) pour monter des soirées à plusieurs projets, des sessions, des ateliers et une compilation.</p>
+    <p>Vous faites de la musique électronique live à Grenoble, ou vous programmez un lieu ? Écrivez-nous.</p>
+    <p>
+      {site.email ? <a href={`mailto:${site.email}`}>{site.email}</a> : <span>Les coordonnées arrivent bientôt.</span>}
+      {site.instagram && <> Retrouvez-nous aussi sur <a href={site.instagram}>Instagram</a>.</>}
+    </p>
+    <button class="bouton" type="button" command="show-modal" commandfor="modale-collectif">En savoir plus</button>
+    <Modale id="modale-collectif" titre="Le collectif">
+      <p>Patchbay réunit des artistes et des projets de musiques électroniques live à Grenoble, des esthétiques expérimentales et du sound-art jusqu’aux formats très dansants. Le nom vient du studio : c’est l’endroit où l’on branche les choses les unes aux autres.</p>
+      <p>Le collectif est une étiquette et une vitrine. Il s’appuie sur l’existant sans le remplacer, et se définira peu à peu par les actions qu’il mène.</p>
+      <h3>Qui peut en faire partie ?</h3>
+      <p>Il n’y a pas de sélection artistique. Le critère est le live : machines ou ordinateur, PureData, SuperCollider, Faust et autres, tant que la musique se joue sur le moment plutôt que d’être entièrement produite en amont. Des DJ sets peuvent aussi trouver leur place dans les soirées que nous programmons.</p>
+      <h3>Ce que nous faisons</h3>
+      <ul>
+        <li>Des dates et des sessions live : soirées à plusieurs projets, formats longs, petits happenings dans des lieux inattendus.</li>
+        <li>Une compilation de morceaux exclusifs, écrits pour l’occasion par les projets du collectif, ou à plusieurs.</li>
+        <li>Des sessions vidéo, en studio ou sur place, centrées sur le geste et le son.</li>
+        <li>Des ateliers DIY : soudure en commun, hacking, prototypage de modules et d’instruments.</li>
+      </ul>
+    </Modale>
+  </section>
+
+  <script is:inline>
+    // Fiche projet ouverte <-> #fiche-<slug> dans l'URL (sans entrée d'historique), pour partager le lien
+    for (const d of document.querySelectorAll('dialog[id^="fiche-"]')) {
+      d.addEventListener('command', (e) => { if (e.command === 'show-modal') history.replaceState(null, '', `#${d.id}`); });
+      d.addEventListener('close', () => history.replaceState(null, '', location.pathname));
+    }
+    const ouverte = location.hash.startsWith('#fiche-') && document.getElementById(location.hash.slice(1));
+    if (ouverte instanceof HTMLDialogElement) ouverte.showModal();
+  </script>
 </Base>

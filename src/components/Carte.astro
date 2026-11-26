@@ -26,7 +26,7 @@ const pos = (v: number) => 4 + v * 0.92;
           {p.data.links.length > 0 && (
             <ul class="pop-liens">{p.data.links.map((l) => <li><a href={l.url}>{l.label}</a></li>)}</ul>
           )}
-          <a class="pop-fiche" href={`/projets/${p.id}/`}>Voir la fiche du projet</a>
+          <button class="pop-fiche" type="button" command="show-modal" commandfor={`fiche-${p.id}`}>Voir la fiche du projet</button>
         </div>
       </div>
     ))}

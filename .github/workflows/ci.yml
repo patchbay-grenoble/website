@@ -23,16 +23,16 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Types (astro check)
         run: bun run check
-      - name: Unit tests
-        run: bun test
       - name: Build (validates content against the collection schemas)
         run: bun run build
+      - name: Unit tests (some read the build output)
+        run: bun test
       - name: HTML validation
         run: bun run validate
       - name: Internal links
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
-          args: --offline --no-progress --root-dir ${{ github.workspace }}/dist --index-files index.html dist
+          args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist --index-files index.html dist
 
   workflows:
     runs-on: ubuntu-latest

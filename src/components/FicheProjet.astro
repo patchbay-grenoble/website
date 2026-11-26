@@ -1,0 +1,25 @@
+---
+// Contenu d'un projet, partagé par sa fenêtre modale (accueil) et sa page /projets/<slug>/
+import type { CollectionEntry } from 'astro:content';
+import Pub from './Pub.astro';
+import { publicationsProjet } from '../lib/flux';
+interface Props { p: CollectionEntry<'projets'>; niveau?: 2 | 3 }
+const { p, niveau = 2 } = Astro.props;
+const { tagline, image, links } = p.data;
+const pubs = await publicationsProjet(p);
+const Titre = `h${niveau}`;
+---
+<div class="projet">
+  {tagline && <p class="chapo">{tagline}</p>}
+  {image && <img src={image} alt="" loading="lazy" />}
+  <div class="corps" set:html={p.rendered?.html ?? ''} />
+  {links.length > 0 && (
+    <ul class="liens-projet">{links.map((l) => <li><a href={l.url}>{l.label}</a></li>)}</ul>
+  )}
+  {pubs.length > 0 && (
+    <section>
+      <Titre>Dernières publications</Titre>
+      <ul class="evts">{pubs.map((x) => <Pub p={x} avecProjet={false} />)}</ul>
+    </section>
+  )}
+</div>

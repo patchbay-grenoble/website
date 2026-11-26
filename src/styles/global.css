@@ -109,6 +109,16 @@ section::before {
   background: var(--sep) left center / contain no-repeat;
 }
 
+section[id] {
+  scroll-margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -164,12 +174,6 @@ img {
   padding: 0 0.25rem;
 }
 
-.haut nav a[aria-current] {
-  text-decoration: underline;
-  text-decoration-color: var(--rose);
-  text-decoration-thickness: 4px;
-}
-
 .haut nav a:hover {
   text-decoration: none;
 }
@@ -222,6 +226,14 @@ img {
 
 .bouton:hover {
   border-color: var(--rose);
+}
+
+button.bouton {
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* Cartographie du live : axes croisés (expérimental → dansant, dark → chill), sans dépendance JS */
@@ -541,8 +553,22 @@ img {
 }
 
 .pop-fiche {
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 700 0.85rem/1.5 var(--corps);
+  text-decoration: underline;
+  text-decoration-color: var(--rose);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.pop-fiche:hover {
+  background: var(--rose);
+  color: var(--encre);
+  text-decoration: none;
 }
 
 .fermer {
@@ -568,7 +594,6 @@ img {
 }
 
 .evts,
-.liste-projets,
 .liens-projet {
   list-style: none;
   padding: 0;
@@ -616,33 +641,6 @@ img {
   margin-top: 2.5rem;
 }
 
-.deux {
-  display: grid;
-  gap: 3rem;
-}
-
-@media (min-width: 56rem) {
-  .deux {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
-
-.liste-projets li {
-  padding: 1rem 0;
-  border-top: 2px solid var(--trait);
-}
-
-.liste-projets h2 {
-  font-size: 1.9rem;
-  margin-bottom: 0.2em;
-  transform: none;
-}
-
-.liste-projets p {
-  margin: 0;
-}
-
 .projet {
   max-width: 62ch;
 }
@@ -672,4 +670,31 @@ img {
 .reseaux {
   display: flex;
   gap: 1.25rem;
+}
+
+.passes summary {
+  padding: 0.5rem 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Fenêtres modales (dialog natif) : même allure que la fiche de la carte */
+.modale {
+  width: min(42rem, 100vw - 2rem);
+  max-height: min(85vh, 100dvh - 2rem);
+  padding: 1.5rem 1.6rem 1.6rem;
+  overflow-y: auto;
+  background: var(--fond);
+  border: 2.5px solid var(--texte);
+  border-radius: 14px 4px 12px 5px / 5px 12px 4px 14px;
+  box-shadow: 0.5rem 0.5rem 0 var(--rose);
+  color: var(--texte);
+}
+
+.modale::backdrop {
+  background: rgb(21 21 21 / 0.55);
+}
+
+.modale h2 {
+  margin-right: 2rem;
 }

@@ -1,32 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Pub from '../../components/Pub.astro';
+import FicheProjet from '../../components/FicheProjet.astro';
 import { getCollection } from 'astro:content';
-import { publicationsProjet } from '../../lib/flux';
 
 export async function getStaticPaths() {
   const projets = await getCollection('projets');
   return projets.map((p) => ({ params: { slug: p.id }, props: { p } }));
 }
 const { p } = Astro.props;
-const { title, tagline, image, links } = p.data;
-const pubs = await publicationsProjet(p);
 ---
-<Base title={title} description={tagline}>
-  <article class="projet">
-    <h1>{title}</h1>
-    {tagline && <p class="chapo">{tagline}</p>}
-    {image && <img src={image} alt="" loading="lazy" />}
-    <div class="corps" set:html={p.rendered?.html ?? ''} />
-    {links.length > 0 && (
-      <ul class="liens-projet">{links.map((l) => <li><a href={l.url}>{l.label}</a></li>)}</ul>
-    )}
-    {pubs.length > 0 && (
-      <section>
-        <h2>Dernières publications</h2>
-        <ul class="evts">{pubs.map((x) => <Pub p={x} avecProjet={false} />)}</ul>
-      </section>
-    )}
-    <p><a href="/projets/">Tous les projets</a></p>
+<Base title={p.data.title} description={p.data.tagline}>
+  <article>
+    <h1>{p.data.title}</h1>
+    <FicheProjet p={p} />
+    <p><a href="/#carte">← Retour à la carte</a></p>
   </article>
 </Base>
