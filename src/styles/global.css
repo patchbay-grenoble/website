@@ -188,12 +188,12 @@ img {
   transform: none;
 }
 
-/* Le dessin occupe y 83-251 du carré 320 : on recadre le vide au-dessus et en dessous */
+/* Le dessin occupe y 39-196 du cadre 420x220 : fenêtre y 35-200, soit 35 / (220 - 165) = 64 % */
 .logo img {
-  width: min(26rem, 100%);
-  aspect-ratio: 320 / 190;
+  width: min(34rem, 100%);
+  aspect-ratio: 420 / 165;
   object-fit: cover;
-  object-position: 50% 55%;
+  object-position: 50% 64%;
 }
 
 .hero .chapo {
